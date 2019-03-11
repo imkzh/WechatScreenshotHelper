@@ -300,7 +300,7 @@ class SimpleHTTPServer:
         self.srv.close()
         self.working_thread.join()
         pass
-        
+
 
 def f_capab(svr: SimpleHTTPServer, method: str, request_headers: dict, http_version: str, requested_uri: str, request_parameters: dict, request_body, response: Response):
     response.headers["Access-Control-Allow-Origin"] = "*"
@@ -326,15 +326,21 @@ def f_cap(svr: SimpleHTTPServer, method, request_headers, http_version, requeste
         response.headers["Content-Type"] = "text/html; charset=utf-8"
         response.status_code = "403 Forbidden"
         return bdy
-    
-        
-if __name__ == "__main__":
-    
+
+
+def main():
+
     httpd = SimpleHTTPServer(32728, bind_addr="127.0.0.1")
-    print("ACCESS_KEY:", httpd.access_key)
     
     httpd.add_file("/capture", f_cap, mime_type="image/png")
     httpd.add_file("/check_capability", f_capab, mime_type="application/json")
     
-    httpd.start()
-    httpd.working_thread.join()
+    if httpd.start():
+        httpd.working_thread.join()
+    else:
+        print("Failed to start http server, may already running or port used by other program?")
+
+
+if __name__ == "__main__":
+    main()
+

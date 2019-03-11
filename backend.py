@@ -10,7 +10,7 @@ startup_script_location = "/etc/profile.d/wechat-capture-backend.sh"
 
 def parse_args():
     par = argparse.ArgumentParser()
-    par.add_argument("command", choices=["enable", "install", "disable", "uninstall"])
+    par.add_argument("command", choices=["enable", "install", "disable", "uninstall", "try"])
     
     args = par.parse_args()
     return args
@@ -36,6 +36,12 @@ def main():
         f.close()
         os.chmod(startup_script_location, stat.S_IRWXU)
         os.system("bash " + startup_script_location)
+        
+    elif args.command in ["try"]:
+        import backend.capture_backend
+        print("You can absolutly try this before making any decision!");
+        print("Press ^C to quit ...");
+        backend.capture_backend.main()
     else:
         try:
        
