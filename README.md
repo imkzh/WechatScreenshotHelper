@@ -5,6 +5,7 @@ This repository contains both source code of uploaded extension and screenshot b
 
 ## Download and Install Firefox Extension
 Download Firefox extension file(.xpi) here: [Release_1.1](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r1.1)
+
 Drag-and-drop the `.xpi` file you downloaded into Firefox, and select `Add` when it prompts.
 
 ## Configure Backend
