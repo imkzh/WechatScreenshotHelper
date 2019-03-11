@@ -78,7 +78,6 @@ class SimpleHTTPServer:
     def generate_access_key():
         k = bytearray([random.randint(0, 255) for _x in range(20)])
         acckey = base64.b64encode(k).decode("utf-8").replace("=", "")
-        acckey = acckey[:8] + '/' + acckey[8:]
         return acckey
     
     @staticmethod

@@ -3,8 +3,8 @@ setTimeout(function(){
   sc.type = "text/javascript";
   sc.textContent = `
 
-	var chatroom = document.getElementById("chatArea");
-	var access_key = null;
+  var chatroom = document.getElementById("chatArea");
+  var access_key = null;
 
     class duckDrop extends Event{
       constructor(target_element, x, y, df=null){
@@ -64,13 +64,13 @@ setTimeout(function(){
       this.mozUserCancelled = false;
       this.types = ["application/x-moz-file", "Files"];
     }
-	
-		var instructions_added = false;
+  
+    var instructions_added = false;
 
-		function show_instructions(){
-		    if (!instructions_added){
+    function show_instructions(){
+        if (!instructions_added){
           var style = ".screenshot_overlay {display: block; transition: opacity 0.5s; position: fixed; width:100%; height:100%; left:0; top: 0; box-sizing:border-box; background-color:rgba(0,0,0,0.3);z-index: 99999;}";
-          style    += ".screenshot_welcome {border-radius: 5px; display: block; position: relative; margin: auto; margin-top:100px; padding: 30px; width: 600px; height: 600px; background-color: white; box-sizing:border-box;box-shadow: 0 0 50px rgba(0,0,0,0.8);}";
+          style    += ".screenshot_welcome {border-radius: 5px; display: block; position: relative; margin: auto; margin-top:100px; padding: 30px; width: 600px; height: 700px; background-color: white; box-sizing:border-box;box-shadow: 0 0 50px rgba(0,0,0,0.8);}";
           style    += ".screenshot_code {font-size: 0.8em; font-family: mono; background-color:rgba(255,255,0,0.3); border: 1px solid rgb(255,230,0); border-left-width: 5px; padding: 10px; padding-left: 20px; margin: 10px;}";
           style    += ".screenshot_message {background-color:rgba(230,100,255,0.3); border: 0 solid rgb(230,100,255); border-top-width: 5px; border-bottom-width: 5px; padding: 10px; padding-left: 20px; margin: 10px;}";
 
@@ -95,31 +95,31 @@ setTimeout(function(){
           welcome    += "Once you have started the backend successfully, <strong>refresh</strong> wechat.";
 
           welcome    += "<center><h3><strong>double click</strong> <span style='color:gray;'>anywhere to dismiss.</span></h3></center>";
-			
-			    var stl = document.createElement("style");
-			    stl.textContent = style;
-			    document.head.appendChild(stl);
-			
-			    var ovl = document.createElement("div");
-			    ovl.className = "screenshot_overlay";
-			    ovl.id = "screenshot_overlay";
-			    var wel = document.createElement("div");
-			    wel.innerHTML = welcome;
-			    wel.className = "screenshot_welcome";
-			
-			    ovl.appendChild(wel);
-			    document.body.appendChild(ovl);
-			
-			    ovl.ondblclick = (e)=>{
-			        ovl.style.opacity = '0';
-							setTimeout(()=>{ovl.style.display="none";}, 510);
-			    }
-		    }else{
-						var ovl = document.getElementById("screenshot_overlay");
-						ovl.style.display="block";
-		        ovl.style.opacity = '1';
-		    }
-		}
+      
+          var stl = document.createElement("style");
+          stl.textContent = style;
+          document.head.appendChild(stl);
+      
+          var ovl = document.createElement("div");
+          ovl.className = "screenshot_overlay";
+          ovl.id = "screenshot_overlay";
+          var wel = document.createElement("div");
+          wel.innerHTML = welcome;
+          wel.className = "screenshot_welcome";
+      
+          ovl.appendChild(wel);
+          document.body.appendChild(ovl);
+      
+          ovl.ondblclick = (e)=>{
+              ovl.style.opacity = '0';
+              setTimeout(()=>{ovl.style.display="none";}, 510);
+          }
+        }else{
+            var ovl = document.getElementById("screenshot_overlay");
+            ovl.style.display="block";
+            ovl.style.opacity = '1';
+        }
+    }
 
     var tlb = document.getElementById("tool_bar");  // get chat room tool bar
 
@@ -135,16 +135,16 @@ setTimeout(function(){
     var new_btn = btn.cloneNode(true);  // clone the node to remove all wechat-defined event handlers.
     new_btn.onclick = function(e){  // create custom event handler
 
-			if (access_key){
-				var req = new XMLHttpRequest();
-				req.responseType = 'arraybuffer';
+      if (access_key){
+        var req = new XMLHttpRequest();
+        req.responseType = 'arraybuffer';
         req.onreadystatechange = function(e){
             if (req.readyState == 4 && req.status == '200'){
               // returned from python backend.
-							// console.log("GOT: ", req.response);
-							if (req.response.byteLength > 0){
-								var b = new Blob([req.response], {type: 'image/png'});
-								var f = new File([b], "capture.png", {type: 'image/png'});
+              // console.log("GOT: ", req.response);
+              if (req.response.byteLength > 0){
+                var b = new Blob([req.response], {type: 'image/png'});
+                var f = new File([b], "capture.png", {type: 'image/png'});
 
                 // simulate the drag-n-drop procdure to send the image we've just captured.
                 var dt = new duckDataTransfer([f]);
@@ -152,39 +152,41 @@ setTimeout(function(){
                 
                 chatroom.dispatchEvent(evt_dr);
                 // console.log("Event Dispatched.");
-							}
+              }
+            } else if (req.readyState == 4){
+                show_instructions();
             }
         };
 
         var u = "http://127.0.0.1:32728/capture" + "?access_key=" + access_key + "&random=" + Math.random();
         req.open("GET", u, true);
         req.send(null);  // signal the python backend to initial a screen shot procdure.
-			} else {
-				show_instructions();
-			}
+      } else {
+        show_instructions();
+      }
         
     };
 
-		
-		var accesskey_req = new XMLHttpRequest();
-		accesskey_req.onreadystatechange = function (e){
-			if (accesskey_req.readyState == 4 && accesskey_req.status == '200'){
-				try{
-					var rtn = JSON.parse(accesskey_req.response);
-					access_key = rtn["access_key"];
-					console.log("Server access_key: " + access_key);
-				}catch(ex){
-					console.log("failed to retrieve access_key from screen capture backend.");
-				}
+    
+    var accesskey_req = new XMLHttpRequest();
+    accesskey_req.onreadystatechange = function (e){
+      if (accesskey_req.readyState == 4 && accesskey_req.status == '200'){
+        try{
+          var rtn = JSON.parse(accesskey_req.response);
+          access_key = rtn["access_key"];
+          console.log("Server access_key: " + access_key);
+        }catch(ex){
+          console.log("failed to retrieve access_key from screen capture backend.");
+        }
 
-			}
-		}
-		accesskey_req.open("GET", "http://127.0.0.1:32728/check_capability", true)
-		accesskey_req.send(null);
+      }
+    }
+    accesskey_req.open("GET", "http://127.0.0.1:32728/check_capability", true)
+    accesskey_req.send(null);
 
     tlb.replaceChild(new_btn, btn);
-	`;
+  `;
   
-	document.body.appendChild(sc);
+  document.body.appendChild(sc);
   
 }, 300);
