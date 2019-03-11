@@ -1,0 +1,47 @@
+<script type="text/javascript">
+        var instructions_added = false;
+        
+		function show_instructions(){
+		    if (!instructions_added){
+		        var style = ".screenshot_overlay {display: block; transition: opacity 0.5s; position: fixed; width:100%; height:100%; left:0; top: 0; box-sizing:border-box; background-color:rgba(0,0,0,0.3);}\n";
+			    style    += ".screenshot_welcome {border-radius: 5px; display: block; position: relative; margin: auto; padding: 30px; width: 600px; height: 400px; background-color: white; box-sizing:border-box;}\n";
+			    style    += ".screenshot_code {font-size: 0.8em; font-family: mono; background-color:rgba(255,255,0,0.3); border: 1px solid rgb(255,230,0); border-left-width: 5px; padding: 10px; padding-left: 20px; margin: 10px;}\n";
+
+			    var welcome = "<h1>Welcome!</h1><hr />It seems that you have successfully installed greasemonkey and my script. ";
+			    welcome    += "However, we need a little bit more thing to be done to get this fully functional. ";
+			    welcome    += "simply fire up your favorite terminal and run the following command:";
+			    welcome    += "<div class='screenshot_code'>";
+			    welcome    += "  git clone https://github.com/imkzh/wechatScreenshotHelper<br />";
+			    welcome    += "  cd wechatScreenshotHelper<br />";
+			    welcome    += "  pip3 install .<br />";
+			    welcome    += "</div>";
+			    
+			    welcome    += "<center><h3><strong>double click</strong> <span style='color:gray;'>anywhere to dismiss.</span></h3></center>";
+			
+			    var stl = document.createElement("style");
+			    stl.textContent = style;
+			    document.head.appendChild(stl);
+			
+			    var ovl = document.createElement("div");
+			    ovl.className = "screenshot_overlay";
+			    ovl.id = "screenshot_overlay";
+			    var wel = document.createElement("div");
+			    wel.innerHTML = welcome;
+			    wel.className = "screenshot_welcome";
+			
+			    ovl.appendChild(wel);
+			    document.body.appendChild(ovl);
+			
+			    ovl.ondblclick = (e)=>{
+			        ovl.style.opacity = '0';
+			    }
+		    }else{
+		        document.getElementById("screenshot_overlay").style.opacity = '1';
+		    }
+		}
+		
+		window.onload = (e)=>{
+		    show_instructions();
+		}
+		
+</script>

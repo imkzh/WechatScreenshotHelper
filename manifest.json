@@ -1,0 +1,28 @@
+{
+    "manifest_version": 2,
+    "name": "Wechat Screenshot Capture Helper(Ubuntu)",
+    "version": "1.1",
+
+    "description": "Make screenshot button on tool bar functional under ubuntu.",
+    "icons": {
+        "48": "images/icon.svg" 
+    },
+
+    "permissions": [
+        "http://127.0.0.1:32728/*",
+        "webRequest"
+    ],
+
+    "content_scripts": [
+        {
+            "matches": ["*://web.wechat.com/*"],
+            "js": ["fantacy.js"],
+            "run_at": "document_end"
+        }
+    ],
+
+    "web_accessible_resources": [
+        "images/icon.svg",
+        "make_screenshot.so"
+    ]
+}
