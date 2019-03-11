@@ -1,5 +1,7 @@
 {
     "manifest_version": 2,
+    "author": "imkzh",
+    "homepage_url": "https://github.com/imkzh/WechatScreenshotHelper",
     "name": "Wechat Screenshot Capture Helper(Ubuntu)",
     "version": "1.1",
 
@@ -22,7 +24,6 @@
     ],
 
     "web_accessible_resources": [
-        "images/icon.svg",
-        "make_screenshot.so"
+        "images/icon.svg"
     ]
 }
