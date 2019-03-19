@@ -63,3 +63,10 @@ Remove extension from Firefox and then:
 
 * once you initial the Screenshot procdure(by clicking `Screenshot` button on the tool bar), you can not cancel it, this is because `ImageMagick import` don't support this.
 
+* will not start correctly with system after `sudo python3 ./backend.py enable` you'd manually start it by running the command again.
+
+## Todo:
+
+* replace `ImageMagic import` with `gnome-screenshot` which provides more feature but less compatibility across platforms.
+
+* implement a simple screenshot editor to add arrows and something else.
