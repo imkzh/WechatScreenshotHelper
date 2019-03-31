@@ -3,6 +3,8 @@
 Source code for firefox extension: **Wechat Screenshot Capture Helper(Ubuntu)**
 
 This repository contains both source code of uploaded extension and screenshot backend.
+# Screenshot
+![Screenshot1](https://raw.githubusercontent.com/imkzh/WechatScreenshotHelper/master/screenshot/screenshot.png "Wechat Screenshot Helper! Edit, confirm and send!")
 
 # Release Note
 
@@ -23,6 +25,8 @@ This is a milestone! Download this extension at [Release 2.0](https://github.com
 ### Bugfixies:
 * Backend now starts with system correctly.
 * You can cancel the screenshot procedure now.
+
+
 
 # Howto
 
