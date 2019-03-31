@@ -1,0 +1,164 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          wechathelperd
+# Required-Start:    networking {dm:s}
+# Required-Stop:     networking {dm:s}
+# Default-Start:     4 5
+# Default-Stop:      0 1 2 3 6
+# Short-Description: WechatHelperBackend
+### END INIT INFO
+
+NAME="WechatHelperBackend"
+INTERPERTER="/usr/bin/python3"
+SCRIPT="{backend_script:s}"
+HOST="http://{hostname:s}:{port:d}"
+NULL="/dev/null"
+
+test -f "$SCRIPT" || exit 5
+. /lib/lsb/init-functions
+
+
+# Safeguards
+cd /tmp
+umask 077
+
+
+# check backend availability by connecting to it. 
+check_wechat_helper() {{
+    local capability status acc_key
+   
+    capability=$(curl "$HOST/check_capability" --connect-timeout 1 2>$NULL)
+    status=$?
+    
+    if [ $status -ne 0 ]; then
+        return 1  # server is not running.
+    else
+        acc_key=$(echo $capability | python3 -c "import sys, json; print(json.load(sys.stdin)['access_key'])" 2>$NULL)
+        status=$?
+        
+        if [ $status -ne 0 ]; then
+            return 2  # a server is running on 32728 but it is not wechathelper backend. 
+        else
+            return 0  # server is running.
+        fi
+    fi
+}}
+
+case $1 in
+    start)
+    
+        check_wechat_helper && status=0 || status=$?
+        
+        if [ $status -eq 0 ]; then
+            log_daemon_msg "$NAME is already running."
+            log_end_msg 0
+            exit 0  # server already running.
+        fi
+        
+        if [ $status -eq 2 ]; then
+            log_daemon_msg "Failed to start $NAME: the port(32728) is already in use."
+            log_end_msg 1
+            exit 0
+        fi
+        
+        log_daemon_msg "Starting $NAME"
+        export DISPLAY="{display:s}"
+        EXEC=$($INTERPERTER "$SCRIPT" 1>$NULL 2>&1)
+        status=$?
+
+        if [ $status -ne 0 ]; then
+            log_daemon_msg "$NAME failed to start: "$EXEC
+            log_end_msg 1
+            exit 0
+        fi
+        
+        for i in $(seq 1 10); do
+            sleep 1
+            check_wechat_helper && status=0 || status=$?
+            if [ $status -eq 0 ]; then
+                log_daemon_msg "$NAME started."
+                log_end_msg 0
+                exit 0  # server started
+            fi
+            log_progress_msg "."
+        done
+        
+        log_daemon_msg "$NAME failed to start in time."
+        log_end_msg 1
+        exit 0
+        ;;
+        
+    stop)
+        # stop the daemon
+        check_wechat_helper && status=0 || status=$?
+        
+        if [ $status -eq 0 ]; then
+            # shut down if running
+            cap=$(curl "$HOST/check_capability" --connect-timeout 1 2>$NULL)
+            # echo $cap
+            status=$?
+            if [ $status -ne 0 ]; then
+                # failed to read capability
+                log_daemon_msg "$NAME is not running."
+                log_end_msg 0
+                exit 0
+            else
+                # capability read
+                # parse access_key
+                acc_key=$(echo $cap | python3 -c "import sys, json; print(json.load(sys.stdin)['access_key'])" 2>$NULL)
+                status=$?
+                if [ $status -ne 0 ]; then
+                    # failed to parse capability
+                    log_daemon_msg "$NAME is not running. (parse failed)"
+                    log_end_msg 0
+                    exit 0
+                else
+                    rtn=$(curl "$HOST/quit?&access_key=$acc_key" --connect-timeout 1 1>$NULL 2>&1)
+                    # echo $rtn
+                    status=$?
+                    if [ $status -ne 0 ]; then
+                        # failed to parse capability
+                        log_daemon_msg "$NAME is not running. (quit signal failed)"
+                        log_end_msg 0
+                        exit 0
+                    else
+                        sleep 2
+                        log_daemon_msg "Stopped $NAME"
+                        log_end_msg 0
+                        exit 0
+                    fi
+                fi
+            fi
+        fi
+        exit 0
+        ;;
+        
+    restart|reload)
+        $0 stop  
+        sleep 3
+        $0 start
+        ;;
+        
+    status)
+        # Check the status of the process.
+        check_wechat_helper && status=0 || status=$?
+        
+        if [ $status -eq 0 ]; then
+            log_success_msg "$NAME is running"
+            log_end_msg 0
+        else
+            log_failure_msg "$NAME is not running"
+            log_end_msg 0
+        fi
+        ;;
+        
+     *)
+        # For invalid arguments, print the usage message.
+        echo "Usage: $0 {{start|stop|restart|reload|status}}"
+        exit 2
+        ;;
+esac
+        
+exit 0
+

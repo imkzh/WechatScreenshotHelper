@@ -1,8 +1,5 @@
+// the following code is written in "injected.js" and injected to "fantacy.js" automatically by a simple python script named "make_injection.py".
 
-setTimeout(function(){
-  var sc = document.createElement("script");
-  sc.type = "text/javascript";
-  sc.textContent = `
 var chatroom = document.getElementById("chatArea");
 
 var EditorUI = {};
@@ -1282,9 +1279,3 @@ function getAccessKey(){
 add_sendscreenshot_button();
 hook_toolbar_screenshot();
 getAccessKey();
-
-`;
-  
-  document.body.appendChild(sc);
-  
-}, 300);

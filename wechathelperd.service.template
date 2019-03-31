@@ -1,0 +1,11 @@
+[Unit]
+Description=Wechat Helper Backend
+
+[Service]
+Type=forking
+
+ExecStart={shell_script:s} start
+ExecStop={shell_script:s} stop
+
+[Install]
+WantedBy=multi-user.target
