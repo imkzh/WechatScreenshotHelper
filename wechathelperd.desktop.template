@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Exec={shell_script:s} start
+Path=/tmp
+Terminal=false
+Name=wechathelperd
+NoDisplay=true
+Comment=wechat helper background process
+Terminal=false

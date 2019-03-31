@@ -1,0 +1,36 @@
+# WechatHelperBackend
+# 
+# you can use:
+# initctl emit start-wechathelperbackend
+# to start wechathelperd
+
+description "Wechat Helper Backend"
+author "imkzh <https://github.com/imkzh/WechatScreenshotHelper>"
+
+start on started lightdm
+start on start-wechathelperbackend
+
+stop on runlevel [01236]
+stop on shutdown
+
+
+respawn
+respawn limit 2 15
+
+emits wechathelperbackend-started
+
+
+script
+    export DISPLAY="{display:s}"
+    cd /tmp
+    {script_path:s}
+end script
+
+post-start script
+    # nothing
+end script
+
+post-stop script
+    # nothing
+end script
+

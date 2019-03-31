@@ -4,8 +4,30 @@ Source code for firefox extension: **Wechat Screenshot Capture Helper(Ubuntu)**
 
 This repository contains both source code of uploaded extension and screenshot backend.
 
+# Release Note
+
+## r2.0
+This is a milestone! Download this extension at [Release 2.0](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0).
+
+### Improvements:
+* Added support for "edit, confirm and send".
+* Better backend(we are using `gnome-screenshot` now)
+* Added screenshot editor!
+    * added support for drawing lines.
+    * added support for adding rectangles and arrows,
+    * added support for adding texts. 
+    * added support for changing text size.
+* Added support for undo and redo while editing
+* Code cleanups.
+
+### Bugfixies:
+* Backend now starts with system correctly.
+* You can cancel the screenshot procedure now.
+
+# Howto
+
 ## Step 1. Download and Install Firefox Extension
-Download Firefox extension file(.xpi) here: [Release_1.2](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r1.2)
+Download Firefox extension file(.xpi) here: [Release 2.0](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0)
 
 Drag-and-drop the `.xpi` file you downloaded into Firefox, and select `Add` when it prompts.
 
@@ -18,20 +40,12 @@ clone this repository to get the backend:
     cd /path/to/store/the/code
     git clone https://github.com/imkzh/WechatScreenshotHelper
 
-### [optional]Step 2.2 Try It First
-
-You can `try` WechatScreenshotHelper first, before making any modification to the system, you don't need any special permission to try WechatScreenshotHelper backend.
-
-    cd WechatScreenshotHelper
-    python3 ./backend.py try
-
 ### Step 2.2 Install It
 
-When you finally decided to install WechatScreenshotHelper, `enable` the backend with:
+When you finally decided to install WechatScreenshotHelper, `install` the backend with:
 
     cd WechatScreenshotHelper
-    sudo python3 ./backend.py enable
-
+    sudo python3 ./config.py install
 
 (After enabling the backend, it will automatically start with system.)
 
@@ -39,34 +53,23 @@ When you finally decided to install WechatScreenshotHelper, `enable` the backend
 
 * you will need both `Firefox Extension` installed and `This Repository` configured for screenshot button to be functional.
 * If you moved your installation, please configure it again.
-* **Keep** the source after install, because we are actually calling it from a generated script in `/etc/profile.d`
-* You also need ImageMagick installed for screenshot functionality. Check it with `which import`, if it returned nothing, you probably have not installed ImageMagick yet, invoke apt to get it: `sudo apt install imagemagick`
+* **Keep** the source after install, because we are actually calling it from a generated script in `~/.config/autostart`
+* `gnome-screenshot` is required for screenshot to work.
 
 ## Uninstall
 
-Remove extension from Firefox and then:
+To uninstall the backend:
 
-    cd /path/to/store/the/code
-    cd WechatScreenshotHelper
-    sudo python3 ./backend.py disable
+    cd /path/to/store/the/WechatScreenshotHelper
+    sudo python3 ./config.py uninstall
 
-
-* An optional reboot is recommended, because after `disable`, backend script is **still running**, you can also kill it manually, it is a `python3` process with commandline `capture_backend.py`
+Remember to remove the extension from Firefox if you are not using this anymore.
 
 ## Cares to be Taken:
 
 * Use this tool gracefully, **DO NOT** abuse this, because Tencent(Wechat) **MAY BAN YOUR ACCOUNT WITHOUT ANY WARNING**. I took no responsibility if you got blacklisted.
-* the backend is actually using a file at `/tmp/firefox-screenshot.png` and a TCP Socket on port `32728`. The backend server is hand made(by myself) and may not secure enough, but we are listening **only for local connections** and requiring an special `access_key`, so it is not that dangerous.
+* the backend is actually using a file at `/tmp/firefox-screenshot.png` and a TCP Socket on port `32728`. The backend server is hand made(by myself) and may not secure enough, but we are listening **only for local connections** and is requiring an special `access_key` for important operations, so it is not that dangerous.
 * I have tested it under `Ubuntu16.04` with `Firefox 65.0.1`, but not sure if it works on other linux distro (theoretically it should).
 
-## Known Issues:
-
-* once you initial the Screenshot procdure(by clicking `Screenshot` button on the tool bar), you can not cancel it, this is because `ImageMagick import` don't support this.
-
-* will not start correctly with system after `sudo python3 ./backend.py enable` you'd manually start it by running the command again.
-
-## Todo:
-
-* replace `ImageMagic import` with `gnome-screenshot` which provides more feature but less compatibility across platforms.
-
-* implement a simple screenshot editor to add arrows and something else.
+# Todo:
+We are not stopping just at here. There are few plans in my mind now, but they're still blueprints.

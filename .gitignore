@@ -1,3 +1,7 @@
 .idea/
 __pycache__/
-
+wechathelperd.sh
+python_sudo
+test.sh
+*.bak
+.cache/
