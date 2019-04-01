@@ -1,18 +1,28 @@
-// the following code is written in "injected.js" and injected to "fantacy.js" automatically by a simple python script named "make_injection.py".
+// the following code is written in "injected.js" and injected to "fantacy.js" automatically by the simple python script named "make_injection.py".
 
 var chatroom = document.getElementById("chatArea");
 
 var EditorUI = {};
-var EditorStatus = {texttool: {}, mouse: {x: 0, y:0, down: false, moved:false}, added: false, currentTool: null, editHistory: [], editFuture: []};
-var Preview = {added: false, visible: false, element: null};
+var ToolEvents = {};
+
+var ScreenshotUI = {
+    Preview: {added: false, visible: false, element: null}, 
+    Instruction: {element: null, added: false},
+    sendScreenshotBtn: null, 
+    sendScreenshotBtnVisible: false,
+};
+
+var EditorStatus = {
+    texttool: {}, 
+    mouse: {x: 0, y:0, down: false, moved:false}, 
+    added: false, 
+    currentTool: null, 
+    editHistory: [], 
+    editFuture: []
+};
 
 var access_key = null;
-
 var pending_screenshot = null;  // screenshot to be send.
-var instructions_added = false;  
-var btn_screenshot_send = null;  // the send screenshot button element.
-var visible_screenshot_btn = false;
-
 const host = "http://127.0.0.1:32728"
 
 
@@ -22,9 +32,11 @@ const host = "http://127.0.0.1:32728"
 // EditorStatus   The object for storing editor status.
 
 
-// EditorUI.root             the editor element.
-// EditorUI.canvas           the editor canvas.
-// EditorUI.ctx              the canvas context
+// EditorUI.root               the editor element.
+// EditorUI.canvas             the editor canvas.
+// EditorUI.ctx                the canvas context
+
+// ScreenshotUI.sendScreenshotBtn  the send screenshot button element.
 
 // EditorStatus.ctxImage     the original context image
 // EditorStatus.currentTool  the current selected tool.
@@ -41,8 +53,6 @@ var Colors = {
 };
 
 const Tools = {PENCIL: 0, RECT: 1, ARROW: 2, TEXT: 3};
-var ToolEvents = {};
-
 const SVGNS = "http://www.w3.org/2000/svg";
 
 const Icons = {
@@ -211,56 +221,55 @@ function duckDataTransfer(files){
 }
 
 function show_instructions(){
-    if (!instructions_added){
+    if (!ScreenshotUI.Instruction.added){
+        
         var style = ".screenshot_overlay {display: block; transition: opacity 0.5s; position: fixed; width:100%; height:100%; left:0; top: 0; box-sizing:border-box; background-color:rgba(0,0,0,0.3);z-index: 99999;}";
         style    += ".screenshot_welcome {border-radius: 5px; display: block; position: relative; margin: auto; margin-top:100px; padding: 30px; width: 600px; height: 700px; background-color: white; box-sizing:border-box;box-shadow: 0 0 50px rgba(0,0,0,0.8);}";
         style    += ".screenshot_code {font-size: 0.8em; font-family: mono; background-color:rgba(255,255,0,0.3); border: 1px solid rgb(255,230,0); border-left-width: 5px; padding: 10px; padding-left: 20px; margin: 10px;}";
         style    += ".screenshot_message {background-color:rgba(230,100,255,0.3); border: 0 solid rgb(230,100,255); border-top-width: 5px; border-bottom-width: 5px; padding: 10px; padding-left: 20px; margin: 10px;}";
 
-        var welcome = "<h2><center>Welcome to Wechat Screenshot Helper!</center></h2>";
+        var welcome = "<h2><center>欢迎使用微信截图助手!</center></h2>";
         welcome    += "<div class='screenshot_message'>";
-        welcome    += "  It seems that you have successfully installed this tiny extension. ";
-        welcome    += "  However, it seems that your backend is not running now.";
+        welcome    += "  您已成功安装浏览器插件, 但是看起来截图后端没有正常运行。访问<a href='https://github.com/imkzh/WechatScreenshotHelper' style='color: '>代码主页</a>获取相关帮助。";
         welcome    += "</div>";
-        welcome    += "* if you haven't installed it yet, we need a little bit more thing to be done to get this fully functional. ";
-        welcome    += "simply fire up your favorite terminal and run the following command:";
+        welcome    += "";
+        welcome    += "* 如果你还没有安装过截图后端：打开终端并输入以下代码";
         welcome    += "<div class='screenshot_code'>";
-        welcome    += "  cd /path/to/store/the/code";
         welcome    += "  git clone https://github.com/imkzh/WechatScreenshotHelper<br />";
         welcome    += "  cd WechatScreenshotHelper<br />";
-        welcome    += "  sudo python3 ./backend.py enable<br />";
+        welcome    += "  python3 ./backend.py install<br />";
         welcome    += "</div>";
-        welcome    += "<br />* if you have already installed the backend, it may closed because of some reason, please invoke:";
+        welcome    += "<br />* 如果你已经安装过截图后端，那么可能是后端因为某些原因没有正常启动，打开终端输入以下代码来启动终端：";
         welcome    += "<div class='screenshot_code'>"
         welcome    += "  cd WechatScreenshotHelper <br />"
         welcome    += "  python3 ./backend.py enable <br />"
         welcome    += "</div> to start it.</br>";
-        welcome    += "Once you have started the backend successfully, <strong>refresh</strong> wechat.";
+        welcome    += "在后端成功启动后，请再次尝试截图（可能需要刷新页面）。";
 
-        welcome    += "<center><h3><strong>double click</strong> <span style='color:gray;'>anywhere to dismiss.</span></h3></center>";
+        welcome    += "<center><h3><strong>双击</strong><span style='color:gray;'>任意位置隐藏此提示。</span></h3></center>";
     
         var stl = document.createElement("style");
         stl.textContent = style;
         document.head.appendChild(stl);
     
-        var ovl = document.createElement("div");
-        ovl.className = "screenshot_overlay";
-        ovl.id = "screenshot_overlay";
+        ScreenshotUI.Instruction.element = document.createElement("div");
+        ScreenshotUI.Instruction.element.className = "screenshot_overlay";
+        ScreenshotUI.Instruction.element.id = "screenshot_overlay";
+
         var wel = document.createElement("div");
         wel.innerHTML = welcome;
         wel.className = "screenshot_welcome";
     
-        ovl.appendChild(wel);
-        document.body.appendChild(ovl);
+        ScreenshotUI.Instruction.element.appendChild(wel);
+        document.body.appendChild(ScreenshotUI.Instruction.element);
     
-        ovl.ondblclick = (e)=>{
-            ovl.style.opacity = '0';
-            setTimeout(()=>{ovl.style.display="none";}, 510);
+        ScreenshotUI.Instruction.element.ondblclick = (e)=>{
+            ScreenshotUI.Instruction.element.style.opacity = '0';
+            setTimeout(()=>{ScreenshotUI.Instruction.element.style.display="none";}, 510);
         }
     }else{
-        var ovl = document.getElementById("screenshot_overlay");
-        ovl.style.display="block";
-        ovl.style.opacity = '1';
+        ScreenshotUI.Instruction.element.elementerlay.style.display="block";
+        ScreenshotUI.Instruction.element.style.opacity = '1';
     }
 }
 
@@ -291,54 +300,54 @@ function dataURItoBlob(dataURI) {
 
 function show_preview(){
 
-    if (!Preview.added){
+    if (!ScreenshotUI.Preview.added){
         inject_style(".thumb_preview {display: block; background-color: #ffe; position: fixed; border-radius: 10px; border: 8px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.3); transition: opacity 0.5s; max-width: 200px; max-height: 200px;}")
-        Preview.element = document.createElement("img");
-        Preview.element.className = "thumb_preview";
-        Preview.element.setAttribute("title", "Click to edit, Right-click to hide.");
-        Preview.element.onclick = function(e){
+        ScreenshotUI.Preview.element = document.createElement("img");
+        ScreenshotUI.Preview.element.className = "thumb_preview";
+        ScreenshotUI.Preview.element.setAttribute("title", "Click to edit, Right-click to hide.");
+        ScreenshotUI.Preview.element.onclick = function(e){
             hide_preview();
             show_editor();
         }
 
-        Preview.element.oncontextmenu = function(e){
+        ScreenshotUI.Preview.element.oncontextmenu = function(e){
             hide_preview();
             return false;
         };
 
-        Preview.element.onmouseenter = function(e){
-            if (Preview.visible){
-                Preview.element.style.opacity = "0.3";
+        ScreenshotUI.Preview.element.onmouseenter = function(e){
+            if (ScreenshotUI.Preview.visible){
+                ScreenshotUI.Preview.element.style.opacity = "0.3";
             }
         };
         
-        Preview.element.onmouseleave = function(e){
-            if(Preview.visible){
-                Preview.element.style.opacity = "1";
+        ScreenshotUI.Preview.element.onmouseleave = function(e){
+            if(ScreenshotUI.Preview.visible){
+                ScreenshotUI.Preview.element.style.opacity = "1";
             }
         };
 
         hide_preview();
-        document.body.appendChild(Preview.element);
-        Preview.added = true;
+        document.body.appendChild(ScreenshotUI.Preview.element);
+        ScreenshotUI.Preview.added = true;
     }
 
     if (pending_screenshot){
-        Preview.visible = true;
+        ScreenshotUI.Preview.visible = true;
         var fr = new FileReader();
         fr.onload = function(e){
-            Preview.element.src = e.target.result;
-            Preview.element.onload = function(ee){
-                var snd_bbox = btn_screenshot_send.getBoundingClientRect();
+            ScreenshotUI.Preview.element.src = e.target.result;
+            ScreenshotUI.Preview.element.onload = function(ee){
+                var snd_bbox = ScreenshotUI.sendScreenshotBtn.getBoundingClientRect();
                 var cx = (snd_bbox.left + snd_bbox.right) / 2;
 
-                var ph = Preview.element.offsetHeight;
-                var pw = Preview.element.offsetWidth;
-                if (Preview.visible){
-                    Preview.element.style.left = (cx - (pw / 2)) + "px" ;
-                    Preview.element.style.top = (snd_bbox.top - ph - 5) + "px";
-                    Preview.element.style.visibility = "visible";
-                    Preview.element.style.opacity = 1;
+                var ph = ScreenshotUI.Preview.element.offsetHeight;
+                var pw = ScreenshotUI.Preview.element.offsetWidth;
+                if (ScreenshotUI.Preview.visible){
+                    ScreenshotUI.Preview.element.style.left = (cx - (pw / 2)) + "px" ;
+                    ScreenshotUI.Preview.element.style.top = (snd_bbox.top - ph - 5) + "px";
+                    ScreenshotUI.Preview.element.style.visibility = "visible";
+                    ScreenshotUI.Preview.element.style.opacity = 1;
                 }
             };
         };
@@ -847,8 +856,8 @@ function bind_canvas_events(){
 function add_editor(){
     if (!EditorStatus.added){
         inject_style(".editor {line-height:100%; display: block; text-align: center; white-space: nowrap; justify-content: center; align-items: center; z-index:9999; background-color:rgba(0,0,0,0.6); position: fixed; width:100%; height:100%; box-sizing: border-box; left:0; top:0; overflow: hidden; transition: opacity 0.5s;}");
+        inject_style(".editor_canvas_wrapper {display: inline-block; vertical-align: middle; box-shadow: 0 0 40px rgb(255, 255, 255, 0.5); padding:0; border:10px solid white; border-radius: 15px; max-width: 80%; max-height: 80%; overflow: hidden; position:relative;}");
 
-        inject_style(".editor_canvas_wrapper {display: inline-block; vertical-align: middle; box-shadow: 0 0 40px rgb(255, 255, 255, 0.5); padding:0; border:10px solid white; border-radius: 15px; max-width: 80%; max-height: 80%;/*position: absolute; left:50px; top:50px; right:50px; margin: auto;*/ overflow: hidden; position:relative;}");
         inject_style(".editor:before {content: ' '; display: inline-block; height: 100%; vertical-align: middle; margin-right:-0.25em;}");
         inject_style(".editor_canvas {max-width: 100%; max-height: 100%;}");
         inject_style(".editor_toolbar {display: flex; align-items:center; justify-content: center; background-color: rgb(46, 50, 56); border-radius: 5px 5px 0 0; box-shadow: 0 0 30px rgb(0,0,0); width: 800px; height: 80px; padding: 10px; box-sizing: border-box; bottom:0; left:0; right:0; margin: auto; position:absolute;}");
@@ -971,6 +980,8 @@ function add_editor(){
             hide_editor();
             hide_sendscreenshot_button();
             pending_screenshot = null;
+            EditorStatus.editHistory.length = 0;
+            EditorStatus.editFuture.length = 0;
         }; discard.title = "丢弃截图";
 
         var color_white = create_toolbar_item(Icons.dot_white);
@@ -1048,19 +1059,18 @@ function show_editor(){
             if (EditorStatus.visible){
                 EditorUI.canvas.width = EditorStatus.ctxImage.width;
                 EditorUI.canvas.height = EditorStatus.ctxImage.height;
-                EditorUI["canvasWrapper"].width = EditorStatus.ctxImage.width;
-                EditorUI["canvasWrapper"].height = EditorStatus.ctxImage.height;
+                EditorUI.canvasWrapper.width = EditorStatus.ctxImage.width;
+                EditorUI.canvasWrapper.height = EditorStatus.ctxImage.height;
 
                 EditorUI.ctx.drawImage(EditorStatus.ctxImage, 0, 0);
-                // canvas.style.left = (document.body.width - canvas.offsetWidth) / 2 + "px";
-                // canvas.style.top = (document.body.height - canvas.offsetHeight) / 2 + "px";
+
                 EditorUI.root.setAttribute("disabled", false);
                 EditorUI.root.style.visibility = "visible";
                 EditorUI.root.style.opacity = 1;
             }
             EditorStatus.currentImage = EditorUI.canvas.toDataURL();
         };
-        EditorStatus.ctxImage.src = Preview.element.src;
+        EditorStatus.ctxImage.src = ScreenshotUI.Preview.element.src;
     }
 }
 
@@ -1087,12 +1097,12 @@ function hide_editor(){
 }
 
 function hide_preview(){
-    if (Preview.added){
-        Preview.visible = false;
-        Preview.element.style.opacity = 0;
+    if (ScreenshotUI.Preview.added){
+        ScreenshotUI.Preview.visible = false;
+        ScreenshotUI.Preview.element.style.opacity = 0;
         setTimeout(() => {
-            if (!Preview.visible){
-                Preview.element.style.visibility = "hidden";
+            if (!ScreenshotUI.Preview.visible){
+                ScreenshotUI.Preview.element.style.visibility = "hidden";
             }
         }, 500);
     }
@@ -1102,9 +1112,15 @@ function send_pending_screenshot(){
     if (pending_screenshot){
         var dt = new duckDataTransfer([pending_screenshot]);
         var evt_dr = new duckDrop(chatroom, 114, 243, dt);
-                
+
+        // simulate the drag-n-drop procdure to send the image we've just captured.
         chatroom.dispatchEvent(evt_dr);
+
+        // remove the pending screenshot and editing history.
         pending_screenshot = null;
+        EditorStatus.editHistory.length = 0;
+        EditorStatus.editFuture.length = 0;
+
         hide_sendscreenshot_button();
     }
 }
@@ -1115,29 +1131,29 @@ function add_sendscreenshot_button(){
     action_bar = $(".action")[0];
     inject_style(".btn_sendscreenshot {transition: margin 0.5s, opacity 0.5s; background-color:white; z-index:999; color:#222;} .btn_sendscreenshot:hover {background-color: #f8f8f8}");
     
-    btn_screenshot_send = document.createElement("a");
-    btn_screenshot_send.className = "btn btn_sendscreenshot";
-    btn_screenshot_send.href = "javascript:;"
-    btn_screenshot_send.style.marginRight = "5px";
-    btn_screenshot_send.textContent = "编辑截图";
-    btn_screenshot_send.title = "点击编辑截图, 右键直接发送";
+    ScreenshotUI.sendScreenshotBtn = document.createElement("a");
+    ScreenshotUI.sendScreenshotBtn.className = "btn btn_sendscreenshot";
+    ScreenshotUI.sendScreenshotBtn.href = "javascript:;"
+    ScreenshotUI.sendScreenshotBtn.style.marginRight = "5px";
+    ScreenshotUI.sendScreenshotBtn.textContent = "编辑截图";
+    ScreenshotUI.sendScreenshotBtn.title = "点击编辑截图, 右键直接发送";
 
-    btn_screenshot_send.onclick = function(e){
+    ScreenshotUI.sendScreenshotBtn.onclick = function(e){
         hide_preview();
         show_editor();
     };
 
-    btn_screenshot_send.oncontextmenu = function(){
+    ScreenshotUI.sendScreenshotBtn.oncontextmenu = function(){
         hide_sendscreenshot_button();
         send_pending_screenshot();
         return false;
     }
 
-    btn_screenshot_send.onmouseenter = function(e){
+    ScreenshotUI.sendScreenshotBtn.onmouseenter = function(e){
         show_preview();
     }
 
-    // btn_screenshot_send.onmouseleave = function(e){
+    // ScreenshotUI.sendScreenshotBtn.onmouseleave = function(e){
     //     hide_preview();
     // }
 
@@ -1157,42 +1173,42 @@ function add_sendscreenshot_button(){
         }
     }
     hide_sendscreenshot_button();
-    action_bar.insertBefore(btn_screenshot_send, btn_send);
+    action_bar.insertBefore(ScreenshotUI.sendScreenshotBtn, btn_send);
 }
 
 
 function hide_sendscreenshot_button(){
-    visible_screenshot_btn = false;
-    btn_screenshot_send.setAttribute("disabled", true);
+    ScreenshotUI.sendScreenshotBtnVisible = false;
+    ScreenshotUI.sendScreenshotBtn.setAttribute("disabled", true);
 
-    if (btn_screenshot_send.offsetWidth > 0){
-        btn_screenshot_send.style.marginRight = "-" + btn_screenshot_send.offsetWidth + "px";
+    if (ScreenshotUI.sendScreenshotBtn.offsetWidth > 0){
+        ScreenshotUI.sendScreenshotBtn.style.marginRight = "-" + ScreenshotUI.sendScreenshotBtn.offsetWidth + "px";
     } else {
-        btn_screenshot_send.style.marginRight = "-98px";
+        ScreenshotUI.sendScreenshotBtn.style.marginRight = "-98px";
     }
 
-    btn_screenshot_send.style.opacity = "0";
+    ScreenshotUI.sendScreenshotBtn.style.opacity = "0";
     setTimeout(() => {
-        if (!visible_screenshot_btn){
-            btn_screenshot_send.style.visibility="hidden";
+        if (!ScreenshotUI.sendScreenshotBtnVisible){
+            ScreenshotUI.sendScreenshotBtn.style.visibility="hidden";
         }
     }, 2000);
     hide_preview();
 }
 
 function show_sendscreenshot_button(){
-    btn_screenshot_send.setAttribute("disabled", false);
-    visible_screenshot_btn = true;
-    btn_screenshot_send.style.visibility="visible";
-    btn_screenshot_send.style.marginRight = "6px";
-    btn_screenshot_send.style.opacity = "1";
+    ScreenshotUI.sendScreenshotBtn.setAttribute("disabled", false);
+    ScreenshotUI.sendScreenshotBtnVisible = true;
+    ScreenshotUI.sendScreenshotBtn.style.visibility="visible";
+    ScreenshotUI.sendScreenshotBtn.style.marginRight = "6px";
+    ScreenshotUI.sendScreenshotBtn.style.opacity = "1";
     setTimeout(() => {
         show_preview();
     }, 500);
 }
 
 function toggle_sendscreenshot_button(){
-    if (visible_screenshot_btn){
+    if (ScreenshotUI.sendScreenshotBtnVisible){
         hide_sendscreenshot_button();
     }else{
         show_sendscreenshot_button();
@@ -1209,13 +1225,15 @@ function request_capture(){
                 // returned from python backend.
                 // console.log("GOT: ", req.response);
                 if (req.response.byteLength > 0){
-                var b = new Blob([req.response], {type: 'image/png'});
-                var f = new File([b], "capture.png", {type: 'image/png'});
+                    var b = new Blob([req.response], {type: 'image/png'});
+                    var f = new File([b], "capture.png", {type: 'image/png'});
+                    pending_screenshot = f;
 
-                // simulate the drag-n-drop procdure to send the image we've just captured.
-                
-                pending_screenshot = f;
-                show_sendscreenshot_button();
+                    // clear edit history.
+                    EditorStatus.editHistory.length = 0;
+                    EditorStatus.editFuture.length = 0;
+                    
+                    show_sendscreenshot_button();
                 }
             } else if (req.readyState == 4){
                 show_instructions();
