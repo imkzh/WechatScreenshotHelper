@@ -65,7 +65,7 @@ clone this repository to get the backend:
 To uninstall the backend:
 
     cd /path/to/the/WechatScreenshotHelper
-    sudo python3 ./config.py uninstall
+    python3 ./config.py uninstall
 
 Remember to remove the extension from Firefox if you are not using this anymore.
 
