@@ -235,19 +235,21 @@ function show_instructions(){
 
         var welcome = "<h2><center>欢迎使用微信截图助手!</center></h2>";
         welcome    += "<div class='screenshot_message'>";
-        welcome    += "  您已成功安装浏览器插件, 但是看起来截图后端没有正常运行。访问<a href='https://github.com/imkzh/WechatScreenshotHelper' style='color: '>代码主页</a>获取相关帮助。";
+        welcome    += "  您已成功安装浏览器插件, 但是看起来截图后端没有正常运行。截图工具需要依赖截图后端截取屏幕图像。<br />";
+        welcome    += "  您可以尝试下面的简易排错步骤重新配置或重启截图后端，或访问<a href='https://github.com/imkzh/WechatScreenshotHelper' style='color: '>代码主页</a>获取更多帮助。<br />";
         welcome    += "</div>";
         welcome    += "";
         welcome    += "* 如果你还没有安装过截图后端：打开终端并输入以下代码";
         welcome    += "<div class='screenshot_code'>";
         welcome    += "  git clone https://github.com/imkzh/WechatScreenshotHelper<br />";
         welcome    += "  cd WechatScreenshotHelper<br />";
-        welcome    += "  python3 ./backend.py install<br />";
+        welcome    += "  python3 ./config.py install<br />";
         welcome    += "</div>";
-        welcome    += "<br />* 如果你已经安装过截图后端，那么可能是后端因为某些原因没有正常启动，打开终端输入以下代码来启动终端：";
+        welcome    += "<br />";
+        welcome    += "* 如果你已经安装过截图后端，那么可能是后端因为某些原因没有正常启动，打开终端输入以下代码来启动后端：";
         welcome    += "<div class='screenshot_code'>"
         welcome    += "  cd WechatScreenshotHelper <br />"
-        welcome    += "  python3 ./backend.py enable <br />"
+        welcome    += "  bash ./wechathelperd.sh start <br />"
         welcome    += "</div> to start it.</br>";
         welcome    += "在后端成功启动后，请再次尝试截图（可能需要刷新页面）。";
 
