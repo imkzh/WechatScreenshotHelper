@@ -9,7 +9,7 @@ This repository contains both source code of uploaded extension and screenshot b
 # Release Note
 
 ## r2.0
-This is a milestone! Download this extension at [Release 2.0.1](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.2).
+This is a milestone! Download this extension at [Release 2.0.2](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.2).
 
 ### Improvements:
 * Added support for "edit, confirm and send".
@@ -32,7 +32,7 @@ This is a milestone! Download this extension at [Release 2.0.1](https://github.c
 # Howto
 
 ## Step 1. Download and Install Firefox Extension
-Download Firefox extension file(.xpi) here: [Release 2.0.1](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.2)
+Download Firefox extension file(.xpi) here: [Release 2.0.2](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.2)
 
 Drag-and-drop the `.xpi` file you downloaded into Firefox, and select `Add` when it prompts.
 
