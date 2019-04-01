@@ -9,7 +9,7 @@ This repository contains both source code of uploaded extension and screenshot b
 # Release Note
 
 ## r2.0
-This is a milestone! Download this extension at [Release 2.0](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0).
+This is a milestone! Download this extension at [Release 2.0.1](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.1).
 
 ### Improvements:
 * Added support for "edit, confirm and send".
@@ -31,7 +31,7 @@ This is a milestone! Download this extension at [Release 2.0](https://github.com
 # Howto
 
 ## Step 1. Download and Install Firefox Extension
-Download Firefox extension file(.xpi) here: [Release 2.0](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0)
+Download Firefox extension file(.xpi) here: [Release 2.0.1](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.1)
 
 Drag-and-drop the `.xpi` file you downloaded into Firefox, and select `Add` when it prompts.
 
@@ -46,10 +46,10 @@ clone this repository to get the backend:
 
 ### Step 2.2 Install It
 
-When you finally decided to install WechatScreenshotHelper, `install` the backend with:
+`install` the WechatScreenshotHelper backend with:
 
     cd WechatScreenshotHelper
-    sudo python3 ./config.py install
+    python3 ./config.py install
 
 (After enabling the backend, it will automatically start with system.)
 
@@ -64,7 +64,7 @@ When you finally decided to install WechatScreenshotHelper, `install` the backen
 
 To uninstall the backend:
 
-    cd /path/to/store/the/WechatScreenshotHelper
+    cd /path/to/the/WechatScreenshotHelper
     sudo python3 ./config.py uninstall
 
 Remember to remove the extension from Firefox if you are not using this anymore.
