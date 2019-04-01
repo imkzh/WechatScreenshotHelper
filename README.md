@@ -84,4 +84,5 @@ This work is licensed under GPLv3.
 
 
 All icons and images included are licensed under Creative Commons Attribution-NonCommercial 4.0 International.
-![licicons](http://creativecommons.org/l/by-nc/4.0/88x31.png "Creative Commons License")
+
+![licicons](http://i.creativecommons.org/l/by-nc/4.0/88x31.png "Creative Commons License")
