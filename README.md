@@ -78,3 +78,10 @@ Remember to remove the extension from Firefox if you are not using this anymore.
 
 # Todo:
 We are not stopping just at here. There are few plans in my mind now, but they're still blueprints.
+
+# License
+This work is licensed under GPLv3.
+
+
+All icons and images included are licensed under Creative Commons Attribution-NonCommercial 4.0 International.
+![licicons](http://creativecommons.org/l/by-nc/4.0/88x31.png "Creative Commons License")
