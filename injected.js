@@ -1293,7 +1293,7 @@ function hook_toolbar_screenshot(){
     var btn = null;
     for (var i = 0; i < tlb.children.length; i++){   // iterate througn tlb.children to find the "screensot" button.
         attr = tlb.children[i].attributes.getNamedItem("title")
-        if (attr != null && (attr.value == "Screenshot" || attr.value == "截屏")){
+        if (attr != null && (attr.value == "Screenshot" || attr.value == "截屏" || attr.value == "螢幕截圖")){
         btn = tlb.children[i];
         break;
         }
