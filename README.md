@@ -1,88 +1,23 @@
-# WechatScreenshotHelper
+# 网页微信截图助手 WechatScreenshotHelper for Ubuntu
 
-Source code for firefox extension: **Wechat Screenshot Capture Helper(Ubuntu)**
+![Screenshot1](./screenshot/screenshot.png "Wechat Screenshot Helper! Edit, confirm and send!")
 
-This repository contains both source code of uploaded extension and screenshot backend.
-# Screenshot
-![Screenshot1](https://raw.githubusercontent.com/imkzh/WechatScreenshotHelper/master/screenshot/screenshot.png "Wechat Screenshot Helper! Edit, confirm and send!")
+本项目包含：1、浏览器插件源代码，2、截图后端源代码
 
-# Release Note
+This repository contains both source code of the packed extension and screenshot backend.
 
-## r2.0
-This is a milestone! Download this extension at [Release 2.0.2](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.2).
+# 下载链接(Download Links)
 
-### Improvements:
-* Added support for "edit, confirm and send".
-* Better backend(we are using `gnome-screenshot` now)
-* Added screenshot editor!
-    * added support for drawing lines.
-    * added support for adding rectangles and arrows,
-    * added support for adding texts. 
-    * added support for changing text size.
-* Added support for undo and redo while editing
-* Code cleanups.
-* Updated the instruction messages for cases when backend is not running correctly.
+[最新版(Latest Version)](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.3)
 
-### Bugfixies:
-* Backend now starts with system correctly.
-* You can cancel the screenshot procedure now.
+# 帮助文档和说明(Documentations and Instructions)
 
+点击[此处](./lang/README.zh-Hans.md)查看帮助文档和说明。
 
+Documentations and instructions can be found [Here](./lang/README.en-US.md)
 
-# Howto
+# 更新日志(Release Notes)
 
-## Step 1. Download and Install Firefox Extension
-Download Firefox extension file(.xpi) here: [Release 2.0.2](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.2)
+点击[此处](./lang/releases.md)(英文)查看更新日志。
 
-Drag-and-drop the `.xpi` file you downloaded into Firefox, and select `Add` when it prompts.
-
-## Step 2. Config Backend
-
-### Step 2.1 Get the Backend
-
-clone this repository to get the backend:
-
-    cd /path/to/store/the/code
-    git clone https://github.com/imkzh/WechatScreenshotHelper
-
-### Step 2.2 Install It
-
-`install` the WechatScreenshotHelper backend with:
-
-    cd WechatScreenshotHelper
-    python3 ./config.py install
-
-(After enabling the backend, it will automatically start with system.)
-
-### Note: 
-
-* you will need both `Firefox Extension` installed and `This Repository` configured for screenshot button to be functional.
-* If you moved your installation, please configure it again.
-* **Keep** the source after install, because we are actually calling it from a generated script in `~/.config/autostart`
-* `gnome-screenshot` is required for screenshot to work.
-
-## Uninstall
-
-To uninstall the backend:
-
-    cd /path/to/the/WechatScreenshotHelper
-    python3 ./config.py uninstall
-
-Remember to remove the extension from Firefox if you are not using this anymore.
-
-## Cares to be Taken:
-
-* Use this tool gracefully, **DO NOT** abuse this, because Tencent(Wechat) **MAY BAN YOUR ACCOUNT WITHOUT ANY WARNING**. I took no responsibility if you got blacklisted.
-* the backend is actually using a file at `/tmp/firefox-screenshot.png` and a TCP Socket on port `32728`. The backend server is hand made(by myself) and may not secure enough, but we are listening **only for local connections** and is requiring an special `access_key` for important operations, so it is not that dangerous.
-* I have tested it under `Ubuntu16.04` with `Firefox 65.0.1`, but not sure if it works on other linux distro (theoretically it should).
-
-# Todo:
-We are not stopping just at here. There are few plans in my mind now, but they're still blueprints.
-
-# License
-This work is licensed under GPLv3.
-
-
-All icons and images included are licensed under Creative Commons Attribution-NonCommercial 4.0 International.
-
-![licicons](http://i.creativecommons.org/l/by-nc/4.0/88x31.png "Creative Commons License")
+Release Notes could be found [here](./lang/releases.md)。
