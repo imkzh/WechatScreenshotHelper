@@ -184,7 +184,8 @@ def save_configurations(conf):
     if os.path.exists(CONF_FILE + ".old"):
         os.remove(CONF_FILE+".old")
     
-    shutil.copy2(CONF_FILE, CONF_FILE + ".old")  # backup old configurations.
+    if os.path.exists(CONF_FILE):
+        shutil.copy2(CONF_FILE, CONF_FILE + ".old")  # backup old configurations.
     
     with io.open(CONF_FILE, "w") as f:
         json.dump(conf, f, indent=2, sort_keys=True)
