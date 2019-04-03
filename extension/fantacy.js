@@ -984,6 +984,9 @@ function add_editor(){
                                     EditorUI.ctx.strokeRect(EditorStatus.texttool.location.x - 3 , EditorStatus.texttool.location.y - 3, EditorStatus.texttool.cachedImage.width + 6, EditorStatus.texttool.cachedImage.height + 6);
                                 });
                             });
+                        },
+                        (txt)=>{
+                            EditorStatus.texttool.text = null;
                         }
                     );
                 } else {
