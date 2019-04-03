@@ -643,6 +643,16 @@ function assign_toolbar_item_id(element, id){
 }
 
 function editor_undo(){
+
+    if (typeof ToolEvents[EditorStatus.currentTool] !== "undefined" && typeof ToolEvents[EditorStatus.currentTool].undo !== "undefined"){
+        console.log("undo procedure is defined for current tool:", EditorStatus.currentTool);                    
+        rtn = ToolEvents[EditorStatus.currentTool].undo();
+        if (typeof rtn !== "undefined" && rtn !== true){
+            console.log("undo procedure is blocked.");            
+            return;
+        }
+    }
+
     if (EditorStatus.editHistory.length > 0){ // if we can redo
         var state = EditorStatus.editHistory.pop();
         EditorStatus.editFuture.push(EditorStatus.currentImage);
@@ -653,6 +663,16 @@ function editor_undo(){
 }
 
 function editor_redo(){
+
+    if (typeof ToolEvents[EditorStatus.currentTool] !== "undefined" && typeof ToolEvents[EditorStatus.currentTool].redo !== "undefined"){
+        console.log("redo procedure is defined for current tool:", EditorStatus.currentTool);                    
+        rtn = ToolEvents[EditorStatus.currentTool].redo();
+        if (typeof rtn !== "undefined" && rtn !== true){
+            console.log("redo procedure is blocked.");
+            return;
+        }
+    }
+
     if (EditorStatus.editFuture.length > 0){ // if we can redo
         var state = EditorStatus.editFuture.pop();
         EditorStatus.editHistory.push(EditorStatus.currentImage);
@@ -967,6 +987,24 @@ function add_editor(){
                     EditorStatus.mouse.y = EditorStatus.ctxImage.height / 2
                     editor_startTextProcedure();
                 }
+            },
+            redo: ()=>{
+                if (EditorStatus.texttool.text) {
+                    console.log("texttool.redo() blocked the redo procedure.");
+                    EditorStatus.texttool.text = null;
+                    editor_restore_image();
+                    return false;
+                }
+                return true;
+            },
+            undo: ()=>{
+                if (EditorStatus.texttool.text) {
+                    console.log("texttool.undo() blocked the redo procedure.");
+                    EditorStatus.texttool.text = null;
+                    editor_restore_image();
+                    return false;
+                }
+                return true;
             }
         };
 

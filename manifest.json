@@ -3,7 +3,7 @@
     "author": "imkzh",
     "homepage_url": "https://github.com/imkzh/WechatScreenshotHelper",
     "name": "Wechat Screenshot Capture Helper(Ubuntu)",
-    "version": "2.0.2",
+    "version": "2.0.3",
 
     "description": "Make screenshot button on tool bar functional under ubuntu.",
     "icons": {
@@ -21,7 +21,7 @@
 
     "content_scripts": [
         {
-            "matches": ["*://web.wechat.com/*"],
+            "matches": ["*://web.wechat.com/*", "*://wx.qq.com/*"],
             "js": ["fantacy.js"],
             "run_at": "document_end"
         }
