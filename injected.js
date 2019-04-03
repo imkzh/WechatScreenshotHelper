@@ -245,7 +245,6 @@ function show_instructions(){
         welcome    += "<div class='screenshot_code'>"
         welcome    += "  cd WechatScreenshotHelper <br />"
         welcome    += "  bash ./wechathelperd.sh start <br />"
-        welcome    += "</div> to start it.</br>";
         welcome    += "在后端成功启动后，请再次尝试截图（可能需要刷新页面）。";
 
         welcome    += "<center><h3><strong>双击</strong><span style='color:gray;'>任意位置隐藏此提示。</span></h3></center>";
