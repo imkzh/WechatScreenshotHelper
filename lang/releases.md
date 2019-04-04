@@ -1,5 +1,14 @@
 # Release Notes
 
+## r2.0.4
+Release 2.0.4 can be found [Here](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.4).
+
+### Code:
+* created a simple preprocessor to "complile" the extension based on multiple files.
+
+### Bugfixies:
+* Removed overlay for main canvas, high images will show correctly now.
+
 ## r2.0.3
 Release 2.0.3 can be found [Here](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.3).
 

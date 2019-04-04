@@ -8,7 +8,7 @@ This repository contains both source code of the packed extension and screenshot
 
 # 下载链接(Download Links)
 
-[最新版(Latest Version)](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.3)
+[最新版(Latest Version)](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.4)
 
 # 帮助文档和说明(Documentations and Instructions)
 

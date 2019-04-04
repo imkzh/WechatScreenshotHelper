@@ -8,12 +8,12 @@
 下载对应浏览器的浏览器插件，然后安装到浏览器中：
 
 ### 火狐用户
-* 访问[此处](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.3)下载最新版的Firefox插件文件(`.xpi`)。
+* 访问[此处](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.4)下载最新版的Firefox插件文件(`.xpi`)。
 * 将下载的插件文件(`.xpi`)拖入浏览器中。
 * 在浏览器提示是否安装时选择`添加`。
 
 ### Chrome用户
-* 访问[此处](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.3)下载Google Chrome插件文件(`.crx`)。
+* 访问[此处](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.4)下载Google Chrome插件文件(`.crx`)。
 * 在浏览器地址栏里输入`chrome://extensions`，打开插件页面。
 * 将刚才下载的文件拖入页面中。
 * 浏览器提示是否安装时选择`添加`。

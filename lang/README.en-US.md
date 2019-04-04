@@ -7,12 +7,12 @@ This repository includes both source code for browser extension: **Wechat Screen
 ## Step 1. Download and Install the Extension
 
 ### For Firefox Users
-* Download Firefox addon file(.xpi) here: [Release 2.0.3](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.3)
+* Download Firefox addon file(.xpi) here: [Release 2.0.4](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.4)
 * **Drag-and-drop** the `.xpi` file you downloaded into Firefox.
 * Select `Add` when it prompts.
 
 ### For Chrome Users
-* Download Chrome extension file(.crx) here: [Release 2.0.3](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.3)
+* Download Chrome extension file(.crx) here: [Release 2.0.4](https://github.com/imkzh/WechatScreenshotHelper/releases/tag/r2.0.4)
 * Navigate to `chrome://extensions`.
 * **drag-and-drop** the `.crx` file you downloaded into Firefox
 * Select `Add Extension` when it prompts.
