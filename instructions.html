@@ -1,0 +1,63 @@
+<style>
+    .screenshot_overlay {
+        display: block; transition: opacity 0.5s; 
+        position: fixed; 
+        width:100%; height:100%; left:0; top: 0; 
+        box-sizing:border-box; 
+        background-color:rgba(0,0,0,0.3);z-index: 99999;
+        text-align: center;
+    }
+    .screenshot_overlay::before{
+        content: ' ';
+        display: inline-block;
+        height: 100%; 
+        margin-right:-0.25em; 
+        vertical-align: middle;
+    }
+    .screenshot_welcome {
+        vertical-align: middle;
+        border-radius: 5px; 
+        display: inline-block; 
+        margin: auto; 
+        padding: 30px;
+        width: 600px;
+        background-color: white; 
+        box-sizing:border-box;
+        box-shadow: 0 0 50px rgba(0,0,0,0.8);
+    }
+
+    .screenshot_code {
+        font-size: 0.8em; font-family: mono; 
+        background-color:rgba(255,255,0,0.3); 
+        border: 1px solid rgb(255,230,0); border-left-width: 5px; 
+        padding: 10px; padding-left: 20px; 
+        margin: 10px;
+    }
+
+    .screenshot_message {
+        background-color:rgba(230,100,255,0.3); 
+        border: 0 solid rgb(230,100,255); 
+        border-top-width: 5px; border-bottom-width: 5px; 
+        padding: 10px; padding-left: 20px; margin: 10px;
+    }
+</style>
+
+<h2><center>欢迎使用微信截图助手!</center></h2>
+<div class='screenshot_message'>
+  您已成功安装浏览器插件, 但是看起来截图后端没有正常运行。截图工具需要依赖截图后端截取屏幕图像。您可以尝试下面的简易排错步骤重新配置或重启截图后端，或访问<a href='https://github.com/imkzh/WechatScreenshotHelper' style='font-weight: 900; color: #7e0078;'>代码主页</a>获取更多帮助。<br />
+</div>
+
+* 如果你还没有安装过截图后端：打开终端并输入以下代码
+<div class='screenshot_code'>
+  git clone https://github.com/imkzh/WechatScreenshotHelper<br />
+  cd WechatScreenshotHelper<br />
+  python3 ./config.py install<br />
+</div>
+<br />
+* 如果你已经安装过截图后端，那么可能是后端因为某些原因没有正常启动，打开终端输入以下代码来启动后端：
+<div class='screenshot_code'>
+  cd WechatScreenshotHelper <br />
+  bash ./wechathelperd.sh start <br />
+</div>
+在后端成功启动后，请再次尝试截图（可能需要刷新页面）。
+<center><h3><strong>双击</strong><span style='color: gray;'>任意位置隐藏此提示。</span></h3></center>
